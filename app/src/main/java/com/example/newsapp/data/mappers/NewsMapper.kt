@@ -5,13 +5,13 @@ import com.example.newsapp.domain.models.News
 import javax.inject.Inject
 
 class NewsMapper @Inject constructor() {
-    operator fun invoke(response: NewsResponse) = with(response){
+    operator fun invoke(response: NewsResponse) = with(response) {
         News(
-            author = author?: "",
-            title = title?: "",
-            description = description?: "",
-            link = link?: "",
-            imageUrl = imageUrl?: "",
+            author = author ?: "",
+            title = title ?: "",
+            description = description ?: "",
+            link = link ?: "",
+            imageUrl = imageUrl ?: "",
         )
     }
 }
