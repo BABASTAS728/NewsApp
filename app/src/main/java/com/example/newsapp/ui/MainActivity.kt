@@ -26,17 +26,20 @@ class MainActivity : AppCompatActivity() {
 
         val recycler = findViewById<RecyclerView>(R.id.recycler)
         recycler.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+
         val itemClick: (String) -> Unit = {
             val address = Uri.parse(it)
             val openLinkIntent = Intent(Intent.ACTION_VIEW, address)
             this.startActivity(openLinkIntent)
         }
 
+        val adapter = NewsAdapter(itemClick)
+        recycler.adapter = adapter
+
         val progressBar = findViewById<ProgressBar>(R.id.progressBar)
         newsViewModel.newsLiveData.observe(this) {
-            val adapter = NewsAdapter(it, itemClick)
-            recycler.adapter = adapter
             progressBar.isVisible = false
+            adapter.setNews(it)
         }
         newsViewModel.getNewsList()
 
