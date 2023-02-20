@@ -28,8 +28,8 @@ class NewsViewModel @Inject constructor(
 
     private val handler = CoroutineExceptionHandler { _, throwable: Throwable ->
         when (throwable) {
-            is SocketTimeoutException -> _errorLiveData.value = R.string.SocketTimeoutException
-            else -> _errorLiveData.value = R.string.OtherExceptions
+            is SocketTimeoutException -> _errorLiveData.value = R.string.socketTimeoutException
+            else -> _errorLiveData.value = R.string.otherExceptions
         }
     }
 
