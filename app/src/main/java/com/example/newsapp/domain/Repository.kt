@@ -4,4 +4,5 @@ import com.example.newsapp.domain.models.News
 
 interface Repository {
     suspend fun getNewsList(): List<News>
+    fun setToken(token: String)
 }

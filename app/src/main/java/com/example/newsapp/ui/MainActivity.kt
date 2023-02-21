@@ -50,5 +50,7 @@ class MainActivity : AppCompatActivity() {
         newsViewModel.loadingLiveData.observe(this) {
             progressBar.isVisible = true
         }
+
+        newsViewModel.setToken("5193158c81d94ee7a0ce2981761b87d9")
     }
 }

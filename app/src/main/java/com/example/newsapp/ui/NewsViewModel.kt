@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.newsapp.R
+import com.example.newsapp.data.source.UserDataSource
 import com.example.newsapp.domain.Repository
 import com.example.newsapp.domain.models.News
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -38,5 +39,9 @@ class NewsViewModel @Inject constructor(
             _loadingLiveData.value = false
             _newsLiveData.value = repository.getNewsList()
         }
+    }
+
+    fun setToken(token: String){
+        repository.setToken(token)
     }
 }
