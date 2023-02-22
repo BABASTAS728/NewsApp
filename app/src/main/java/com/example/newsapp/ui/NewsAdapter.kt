@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.newsapp.R
+import com.example.newsapp.databinding.NewsLayoutBinding
 import com.example.newsapp.domain.models.News
 
 class NewsAdapter(private val itemCLick: (String) -> Unit) :
@@ -11,9 +12,9 @@ class NewsAdapter(private val itemCLick: (String) -> Unit) :
 
     private val news = mutableListOf<News>()
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NewsViewHolder {
-        val view =
-            LayoutInflater.from(parent.context).inflate(R.layout.news_layout, parent, false)
-        return NewsViewHolder(view, itemCLick)
+        val layoutInflater = LayoutInflater.from(parent.context)
+        val newsLayoutBinding = NewsLayoutBinding.inflate(layoutInflater, parent, false)
+        return NewsViewHolder(newsLayoutBinding, itemCLick)
     }
 
     override fun getItemCount(): Int = news.size

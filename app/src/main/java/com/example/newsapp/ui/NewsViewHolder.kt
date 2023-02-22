@@ -5,19 +5,21 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.newsapp.R
+import com.example.newsapp.databinding.NewsLayoutBinding
 import com.example.newsapp.domain.models.News
 
-class NewsViewHolder(itemView: View, private val itemClick: (String) -> Unit) :
-    RecyclerView.ViewHolder(itemView) {
+class NewsViewHolder(private val newsLayoutBinding: NewsLayoutBinding, private val itemClick: (String) -> Unit) :
+    RecyclerView.ViewHolder(newsLayoutBinding.root) {
     fun bind(news: News) {
-        itemView.findViewById<TextView>(R.id.author).text = news.author
-        itemView.findViewById<TextView>(R.id.title).text = news.title
-        itemView.findViewById<TextView>(R.id.description).text = news.description
-        Glide.with(itemView.context)
-            .load(news.imageUrl)
-            .into(itemView.findViewById(R.id.image))
+        newsLayoutBinding.author.text = news.author
+        newsLayoutBinding.title.text = news.title
+        newsLayoutBinding.description.text = news.description
 
-        itemView.setOnClickListener {
+        Glide.with(newsLayoutBinding.root.context)
+            .load(news.imageUrl)
+            .into(newsLayoutBinding.image)
+
+        newsLayoutBinding.root.setOnClickListener {
             itemClick.invoke(news.link)
         }
     }
