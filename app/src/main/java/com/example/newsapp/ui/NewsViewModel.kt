@@ -29,15 +29,19 @@ class NewsViewModel @Inject constructor(
 
     private val handler = CoroutineExceptionHandler { _, throwable: Throwable ->
         when (throwable) {
-            is SocketTimeoutException -> _errorLiveData.value = R.string.socketTimeoutException
+            is SocketTimeoutException -> {
+                _errorLiveData.value = R.string.socketTimeoutException
+
+            }
             else -> _errorLiveData.value = R.string.otherExceptions
         }
     }
 
     fun getNewsList() {
+        _loadingLiveData.value = true
         viewModelScope.launch(handler) {
-            _loadingLiveData.value = false
             _newsLiveData.value = repository.getNewsList()
+            _loadingLiveData.value = false
         }
     }
 
