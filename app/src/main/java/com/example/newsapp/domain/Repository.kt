@@ -1,8 +1,8 @@
 package com.example.newsapp.domain
 
-import com.example.newsapp.domain.models.News
+import com.example.newsapp.data.database.NewsEntity
 
 interface Repository {
-    suspend fun getNewsList(): List<News>
+    suspend fun getNewsList(connection: Boolean): List<NewsEntity>
     fun setToken(token: String)
 }
