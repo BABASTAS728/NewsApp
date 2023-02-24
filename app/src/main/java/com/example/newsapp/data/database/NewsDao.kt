@@ -1,4 +1,5 @@
 package com.example.newsapp.data.database
+
 import androidx.room.*
 import androidx.room.Dao
 
