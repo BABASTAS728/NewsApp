@@ -1,11 +1,11 @@
 package com.example.newsapp.data
 
-import com.example.newsapp.data.database.NewsEntity
 import com.example.newsapp.data.mappers.NewsMapper
 import com.example.newsapp.data.network.NewsService
 import com.example.newsapp.data.source.DataBaseSource
 import com.example.newsapp.data.source.UserDataSource
 import com.example.newsapp.domain.Repository
+import com.example.newsapp.domain.models.News
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
@@ -17,17 +17,17 @@ class RepositoryImpl @Inject constructor(
     private val dataBaseSource: DataBaseSource
 ) : Repository {
 
-    override suspend fun getNewsList(connection: Boolean): List<NewsEntity> {
+    override suspend fun getNewsList(connection: Boolean): List<News> {
         return withContext(Dispatchers.IO) {
             if (connection) {
                 val response =
                     service.getNewsResponse("apple", userDataSource.getUserToken()).execute().body()
                         ?: throw Exception()
-                val newsList = (response.list ?: listOf()).map { newsMapper(it) }
+                val newsList = (response.list ?: listOf()).map { newsMapper.responseToEntity(it) }
                 dataBaseSource.delete(dataBaseSource.getAll())
                 dataBaseSource.insertAll(newsList)
-                newsList
-            } else dataBaseSource.getAll()
+                newsList.map { newsMapper.entityToDefault(it) }
+            } else dataBaseSource.getAll().map { newsMapper.entityToDefault(it) }
         }
     }
 
