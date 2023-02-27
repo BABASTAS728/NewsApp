@@ -22,7 +22,7 @@ class NewsAdapter(private val itemCLick: (String) -> Unit) :
         holder.bind(news[position])
     }
 
-    fun setNews(news: List<News>){
+    fun setNews(news: List<News>) {
         this.news.clear()
         this.news.addAll(news)
         notifyDataSetChanged()

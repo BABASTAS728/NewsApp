@@ -5,7 +5,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.newsapp.R
-import com.example.newsapp.data.source.UserDataSource
 import com.example.newsapp.domain.Repository
 import com.example.newsapp.domain.models.News
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -28,24 +27,28 @@ class NewsViewModel @Inject constructor(
     val loadingLiveData: LiveData<Boolean> get() = _loadingLiveData
 
     private val handler = CoroutineExceptionHandler { _, throwable: Throwable ->
-        when (throwable) {
-            is SocketTimeoutException -> {
-                _errorLiveData.value = R.string.socketTimeoutException
-
+        viewModelScope.launch {
+            when (throwable) {
+                is SocketTimeoutException -> {
+                    val newsList = repository.getNewsList(false)
+                    if (newsList.isNotEmpty()) _newsLiveData.value = newsList
+                    else _errorLiveData.value = R.string.newsEmpty
+                    _loadingLiveData.value = false
+                }
+                else -> _errorLiveData.value = R.string.otherExceptions
             }
-            else -> _errorLiveData.value = R.string.otherExceptions
         }
     }
 
     fun getNewsList() {
         _loadingLiveData.value = true
         viewModelScope.launch(handler) {
-            _newsLiveData.value = repository.getNewsList()
+            _newsLiveData.value = repository.getNewsList(true)
             _loadingLiveData.value = false
         }
     }
 
-    fun setToken(token: String){
+    fun setToken(token: String) {
         repository.setToken(token)
     }
 }
