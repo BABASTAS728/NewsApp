@@ -17,9 +17,9 @@ class RepositoryImpl @Inject constructor(
     private val dataBaseSource: DataBaseSource
 ) : Repository {
 
-    override suspend fun getNewsList(connection: Boolean): List<News> {
+    override suspend fun getNewsList(cache: Boolean): List<News> {
         return withContext(Dispatchers.IO) {
-            if (connection) {
+            if (cache) {
                 val response =
                     service.getNewsResponse("apple", userDataSource.getUserToken()).execute().body()
                         ?: throw Exception()
