@@ -1,9 +1,11 @@
 package com.example.newsapp.ui
 
+import android.animation.ObjectAnimator
 import android.content.Intent
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.databinding.DataBindingUtil
@@ -40,10 +42,6 @@ class MainActivity : AppCompatActivity() {
             adapter.setNews(it)
         }
         newsViewModel.getNewsList()
-
-        newsViewModel.errorLiveData.observe(this) {
-            Toast.makeText(this, getString(it), Toast.LENGTH_SHORT).show()
-        }
 
         newsViewModel.setToken("5193158c81d94ee7a0ce2981761b87d9")
     }
