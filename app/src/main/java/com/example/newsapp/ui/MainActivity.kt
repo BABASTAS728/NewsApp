@@ -11,17 +11,22 @@ import androidx.activity.viewModels
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.newsapp.NewsApp
 import com.example.newsapp.R
+import com.example.newsapp.data.di.ViewModelFactory
 import com.example.newsapp.databinding.ActivityMainBinding
-import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
-@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
-    private val newsViewModel by viewModels<NewsViewModel>()
+    @Inject
+    lateinit var factory: ViewModelFactory
+    private val newsViewModel: NewsViewModel by viewModels { factory }
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        (applicationContext as NewsApp).appComponent.inject(this)
         super.onCreate(savedInstanceState)
+
         val binding: ActivityMainBinding = DataBindingUtil.setContentView(this, R.layout.activity_main)
         binding.lifecycleOwner = this
         binding.viewmodel = newsViewModel

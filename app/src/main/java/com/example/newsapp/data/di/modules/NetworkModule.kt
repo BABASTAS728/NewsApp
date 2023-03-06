@@ -1,22 +1,20 @@
-package com.example.newsapp.data.di
+package com.example.newsapp.data.di.modules
 
 import android.content.Context
 import android.content.SharedPreferences
 import com.example.newsapp.data.network.NewsService
 import dagger.Module
 import dagger.Provides
-import dagger.hilt.InstallIn
-import dagger.hilt.android.qualifiers.ApplicationContext
-import dagger.hilt.components.SingletonComponent
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import javax.inject.Singleton
 
 @Module
-@InstallIn(SingletonComponent::class)
 class NetworkModule {
     @Provides
+    @Singleton
     fun getRetrofit(client: OkHttpClient): Retrofit = Retrofit.Builder()
         .baseUrl("https://newsapi.org/v2/")
         .addConverterFactory(GsonConverterFactory.create())
@@ -24,9 +22,11 @@ class NetworkModule {
         .build()
 
     @Provides
+    @Singleton
     fun getNewsService(retrofit: Retrofit): NewsService = retrofit.create(NewsService::class.java)
 
     @Provides
+    @Singleton
     fun getClient(): OkHttpClient {
         val interceptor = HttpLoggingInterceptor()
         interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
@@ -34,7 +34,8 @@ class NetworkModule {
     }
 
     @Provides
-    fun providePrefs(@ApplicationContext context: Context): SharedPreferences {
+    @Singleton
+    fun providePrefs( context: Context): SharedPreferences {
         return context.getSharedPreferences(PREFS_KEY, Context.MODE_PRIVATE)
     }
 
